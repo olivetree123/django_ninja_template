@@ -1,7 +1,10 @@
 from ninja import Router
 from ninja.constants import NOT_SET
-from django.contrib.auth.hashers import make_password, check_password
 from django.db import IntegrityError
+from django.contrib.auth.hashers import (
+    make_password,
+    check_password,
+)
 
 from main import (
     cache,
@@ -18,8 +21,8 @@ from main.auth import async_auth
 user_router = Router(tags=["用户"])
 
 
-@user_router.post("/create",
-                  auth=async_auth,
+@user_router.post("/signup",
+                  auth=NOT_SET,
                   response=OkResponse[results.UserResult] | FailedResponse,
                   summary="| 注册")
 async def CreateUserHandler(request, param: params.CreateUserParam):

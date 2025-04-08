@@ -9,8 +9,15 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+if not os.path.exists(".env"):
+    raise FileNotFoundError(".env file not found")
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-7+(m!162e))!)idp&k=8jjo5pay_a#&$i+&e67g-kf^w)ylh$x"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -73,12 +80,12 @@ WSGI_APPLICATION = "django_ninja_template.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "django_ninja_template",
-        "USER": "root",
-        "PASSWORD": "123456",
-        "HOST": "localhost",
-        "PORT": "3306",
+        "ENGINE": os.getenv("DB_ENGINE"),
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
 
@@ -129,6 +136,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 PROJECT = "django_ninja_template"
 
 # Redis
-REDIS_HOST = "127.0.0.1"
-REDIS_PORT = 6379
-REDIS_DB = 0
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_DB = os.getenv("REDIS_DB")
